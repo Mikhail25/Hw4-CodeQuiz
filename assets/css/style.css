@@ -1,0 +1,45 @@
+
+
+body {
+    display: flex;
+    justify-content: space-between;
+}
+
+.quiz-holder{
+    margin-top: 100px;
+    width: 800px;
+}
+
+.quiz-title{
+    text-align: center;
+}
+
+#quiz-content{
+    text-align: left;
+}
+
+h1{
+    font-size: 200%;
+
+}
+
+h1, p, button{
+    margin: 20px;
+}
+
+button{
+    padding: 5px;
+    background-color: blueviolet;
+    color: aliceblue;
+    border-radius: 10px;
+}
+
+button:hover{
+    opacity: .5;
+}
+
+#answer{
+    align-items: flex-start;
+    visibility: ;
+}
+
