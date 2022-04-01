@@ -14,8 +14,12 @@ body {
     text-align: center;
 }
 
-#quiz-content{
+.quiz-content{
     text-align: left;
+}
+
+.quiz-content h1{
+    margin-left: 0px;
 }
 
 h1{
@@ -23,7 +27,7 @@ h1{
 
 }
 
-h1, p, button{
+h1, p{
     margin: 20px;
 }
 
@@ -40,6 +44,13 @@ button:hover{
 
 #answer{
     align-items: flex-start;
-    visibility: ;
+    visibility: hidden;
 }
 
+ul{
+    text-decoration: none;
+}
+
+li {
+    margin: 5px;
+}
