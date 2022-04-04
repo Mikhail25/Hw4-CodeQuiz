@@ -31,6 +31,10 @@ h1, p{
     margin: 20px;
 }
 
+p{
+    margin-left: 0px;
+}
+
 button{
     padding: 5px;
     background-color: blueviolet;
@@ -42,7 +46,7 @@ button:hover{
     opacity: .5;
 }
 
-#answer{
+#result{
     align-items: flex-start;
     visibility: hidden;
 }
