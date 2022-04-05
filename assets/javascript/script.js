@@ -31,6 +31,7 @@ function startQuiz(event){
 
         startTimer();
         populateQuiz();
+        // viewHighScore();
 }
 
 function populateQuiz(){
@@ -149,24 +150,53 @@ function gameOverPage(){
 
     
     scoreSubmitBtn.addEventListener('click',function(){
-        // var intial = initialTextInput.value.trim;
 
-        // if(!intial){
-        //     initial = "Default";
-        // }
+        var highScore = [initialTextInput.value.trim()+" - "+quizTimer.textContent];
+        var scoreStorage;
 
-        var highScore = {
-            initial: initialTextInput.value.trim(),
-            score: quizTimer.textContent
-        };
+        //check if array is empty
+        if(localStorage.getItem("highScore") == null){
+            scoreStorage = [];
+        }else{
+            scoreStorage = JSON.parse(localStorage.getItem("highScore"));
+        }
+
+        scoreStorage.push(highScore);
         
-        localStorage.setItem("highScore", JSON.stringify(highScore));
+        localStorage.setItem("highScore", JSON.stringify(scoreStorage));
+        // viewHighScore();
+
+        console.log(localStorage.getItem("highScore"));
     });
 }
 
 function viewHighScore(){
     quizHolder.style.visibility = "hidden";
-    
+
+    quizContent.innerHTML ='<h1>Highscore!</h1>'+
+    '<ol id="highScoreContainer">'+
+    '</ol>'+
+    '<div>'+
+        '<button id="highScoreSubmit">Go Back</button>'+
+        '<button id="highScoreSubmit">Clear HighScores</button>'+
+    '</div>';
+
+    highScoreContainer = document.querySelector('#highScoreContainer');
+    var highScoreList = JSON.parse(localStorage.getItem('highScore'));
+
+    console.log(highScoreList);
+    console.log(highScoreList[0]);
+
+
+        for(var i = 0; i < highScoreList.length; i++){
+            var liTag = document.createElement("li");
+            console.log(highScoreList[i].initial);
+            console.log(highScoreList[i].score);
+            liTag.textContent = highScoreList[i].initial + " - "+highScoreList[i].score; 
+
+            highScoreContainer.appendChild(liTag);
+        
+    }
 }
 
 function rehideAnswer(){
