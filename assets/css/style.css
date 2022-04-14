@@ -32,7 +32,7 @@ h1, p{
 }
 
 p{
-    margin-left: 0px;
+    margin-left: 10px;
 }
 
 button{
@@ -40,6 +40,7 @@ button{
     background-color: blueviolet;
     color: aliceblue;
     border-radius: 10px;
+    margin-right: 10px;
 }
 
 button:hover{
@@ -57,4 +58,17 @@ ul{
 
 li {
     margin: 5px;
+}
+
+#highScoreContainer{
+    text-decoration: default;
+    list-style-type: decimal;
+}
+
+#highScoreContainer li{
+    text-decoration: default;
+
+    background-color: lavender;
+    margin-top: 10px;
+    padding: 5px;
 }

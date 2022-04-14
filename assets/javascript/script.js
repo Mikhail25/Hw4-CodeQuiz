@@ -6,7 +6,7 @@ quizAnswer = document.querySelector('#answer');
 quizTimer = document.querySelector('#timer-count');
 
 var n = 0;
-var secondsLeft = quizTimer.textContent;
+var secondsLeft;
 
 var quizQuestions = [
     {
@@ -18,6 +18,46 @@ var quizQuestions = [
         question: "What is the first mathematical expression in the order of operations?",
         choices: ["addition", "parenthesis","division", "numbers"],
         choiceAnswer: 2
+    },
+    {
+        question: "What does HTML stands for?",
+        choices: ["Hyper Text Markup Language", "Hightext machine language","Hot Mail", "Hypertext and links markup language"],
+        choiceAnswer: 1
+    },
+    {
+        question: "How is document type initialized in HTML5?",
+        choices: ["</DOCTYPE HTML>", "</DOCTYPE>","<!DOCTYPE HTML>", "</DOCTYPE html>"],
+        choiceAnswer: 3
+    },
+    {
+        question: "How many heading tags are there in HTML5?",
+        choices: ["4", "2","8", "6"],
+        choiceAnswer: 4
+    },
+    {
+        question: "Which of the following attributes is used to add link to any element?",
+        choices: ["link", "ref","href", "newref"],
+        choiceAnswer: 3
+    },
+    {
+        question: "What is the purpose of using div tags in HTML?",
+        choices: ["For creating Different styles", "For creating different sections","For adding headings", "For adding titles"],
+        choiceAnswer: 2
+    },
+    {
+        question: "",
+        choices: ["<italic>", "<style= 'i'>","<i>", "<style='italic'>"],
+        choiceAnswer: 3
+    },
+    {
+        question: "Which tag is used for creating a drop-down selection list?",
+        choices: ["<select>", "<option>","<dropdown>", "<list>"],
+        choiceAnswer: 3
+    },
+    {
+        question: "Which of the following attributes is used to open an hyperlink in new tab?",
+        choices: ["tab", "href","target", "ref"],
+        choiceAnswer: 3
     }
 ];
 
@@ -26,14 +66,19 @@ function startQuiz(event){
     console.log("Button is called!");
 
     //Hide the title and populate the quiz
-    quizHolder.style.visibility = "hidden";
-    quizHolder.style.height = "0px";
+        hideStartText();
 
         startTimer();
         populateQuiz();
         // viewHighScore();
 }
 
+function hideStartText(){
+    quizHolder.style.visibility = "hidden";
+    quizHolder.style.height = "0px";
+}
+
+//Populates the quiz with questions
 function populateQuiz(){
         
         //populate the questions and choices
@@ -116,9 +161,14 @@ function populateQuiz(){
 
 //Timer for the quiz 
 function startTimer(){
-
+    secondsLeft = quizTimer.textContent;
     var timerInterval = setInterval(function(){
         secondsLeft--;
+
+        if(secondsLeft < 0){
+            secondsLeft = 0;
+        }        
+        
         quizTimer.textContent = secondsLeft;
 
         //Timer stops when time is up or all questions are answered
@@ -131,6 +181,7 @@ function startTimer(){
 
 }
 
+//Function to run when the game ends
 function gameOverPage(){
     quizContent.innerHTML ='<h1>All Done!</h1>'+
     '<p>Your final Score is <span id="score"></span>.</p>'+
@@ -151,7 +202,11 @@ function gameOverPage(){
     
     scoreSubmitBtn.addEventListener('click',function(){
 
-        var highScore = [initialTextInput.value.trim()+" - "+quizTimer.textContent];
+        // var highScore = [initialTextInput.value.trim()+" - "+quizTimer.textContent];
+        var highScore = {
+            initials: initialTextInput.value.trim(),
+            score: quizTimer.textContent
+        }
         var scoreStorage;
 
         //check if array is empty
@@ -162,41 +217,71 @@ function gameOverPage(){
         }
 
         scoreStorage.push(highScore);
-        
-        localStorage.setItem("highScore", JSON.stringify(scoreStorage));
-        // viewHighScore();
+        //Sorts the highscore by score descending
+        scoreStorage.sort((a, b) => (a.score < b.score) ? 1 : -1);
 
-        console.log(localStorage.getItem("highScore"));
+        localStorage.setItem("highScore", JSON.stringify(scoreStorage));
+        viewHighScore();
+
+        console.log(JSON.parse(localStorage.getItem("highScore")).length);
     });
 }
 
+//Function to display highscore
 function viewHighScore(){
     quizHolder.style.visibility = "hidden";
+    populateScores();
+    
 
+}
+
+
+function resetScores(){
+
+}
+
+function populateScores(){
     quizContent.innerHTML ='<h1>Highscore!</h1>'+
     '<ol id="highScoreContainer">'+
     '</ol>'+
-    '<div>'+
-        '<button id="highScoreSubmit">Go Back</button>'+
-        '<button id="highScoreSubmit">Clear HighScores</button>'+
+    '<div >'+
+        '<button id="returnButton">Go Back</button>'+
+        '<button id="clearHighscores">Clear HighScores</button>'+
     '</div>';
 
     highScoreContainer = document.querySelector('#highScoreContainer');
     var highScoreList = JSON.parse(localStorage.getItem('highScore'));
 
-    console.log(highScoreList);
-    console.log(highScoreList[0]);
+    console.log("Highscore List: "+highScoreList);
 
-
+    if(highScoreList !== null){
         for(var i = 0; i < highScoreList.length; i++){
             var liTag = document.createElement("li");
-            console.log(highScoreList[i].initial);
-            console.log(highScoreList[i].score);
-            liTag.textContent = highScoreList[i].initial + " - "+highScoreList[i].score; 
+
+            liTag.textContent = highScoreList[i].initials + " - "+highScoreList[i].score; 
 
             highScoreContainer.appendChild(liTag);
-        
+        }
     }
+
+
+    btnClear = document.querySelector('#clearHighscores');
+    btnReturn = document.querySelector('#returnButton');
+
+    //Clearing the localStorage and refreshes the page
+    btnClear.addEventListener("click", function(){
+        localStorage.removeItem("highScore");
+        populateScores();
+    });
+
+    //A psuedo back button that resets everything
+    btnReturn.addEventListener("click", function(){
+        n = 0;
+        quizContent.innerHTML = "";
+        quizHolder.style.visibility = "visible";
+        quizHolder.style.height = "default";
+        quizTimer.textContent = 60;
+    });
 }
 
 function rehideAnswer(){
@@ -204,7 +289,6 @@ function rehideAnswer(){
 }
 
 quizStartBtn.addEventListener('click', startQuiz);
-//quizChoiceBtn.addEventListener('click', choiceResult);
 
 
 
